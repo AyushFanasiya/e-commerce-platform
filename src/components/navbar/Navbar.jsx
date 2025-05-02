@@ -8,6 +8,7 @@ const Navbar = () => {
     const navigate = useNavigate();
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const cartItems = useSelector((state) => state.cart);
 
     useEffect(() => {
@@ -24,6 +25,7 @@ const Navbar = () => {
     };
 
     const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
+    const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
 
     return (
         <nav className={`fixed top-0 z-50 w-full transition-all duration-300 bg-white shadow-md`}>
@@ -35,7 +37,29 @@ const Navbar = () => {
                         E-commerce
                     </Link>
 
-                    {/* Nav Links */}
+                    {/* Mobile Menu Button */}
+                    <button
+                        onClick={toggleMobileMenu}
+                        className="md:hidden p-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100 focus:outline-none"
+                    >
+                        <svg
+                            className="h-6 w-6"
+                            fill="none"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            {isMobileMenuOpen ? (
+                                <path d="M6 18L18 6M6 6l12 12" />
+                            ) : (
+                                <path d="M4 6h16M4 12h16M4 18h16" />
+                            )}
+                        </svg>
+                    </button>
+
+                    {/* Nav Links - Desktop */}
                     <div className="hidden md:flex items-center space-x-8">
                         <Link to="/" className="font-medium text-gray-700 hover:text-primary transition-colors duration-200">
                             Home
@@ -109,6 +133,67 @@ const Navbar = () => {
                         )}
                     </div>
                 </div>
+
+                {/* Mobile Menu */}
+                {isMobileMenuOpen && (
+                    <div className="md:hidden py-4 border-t border-gray-200">
+                        <div className="flex flex-col space-y-4">
+                            <Link
+                                to="/"
+                                className="font-medium text-gray-700 hover:text-primary transition-colors duration-200"
+                                onClick={toggleMobileMenu}
+                            >
+                                Home
+                            </Link>
+                            <Link
+                                to="/allproduct"
+                                className="font-medium text-gray-700 hover:text-primary transition-colors duration-200"
+                                onClick={toggleMobileMenu}
+                            >
+                                All Products
+                            </Link>
+                            {!user ? (
+                                <>
+                                    <Link
+                                        to="/signup"
+                                        className="btn-secondary"
+                                        onClick={toggleMobileMenu}
+                                    >
+                                        Sign Up
+                                    </Link>
+                                    <Link
+                                        to="/login"
+                                        className="btn-primary"
+                                        onClick={toggleMobileMenu}
+                                    >
+                                        Login
+                                    </Link>
+                                </>
+                            ) : (
+                                <>
+                                    {user.role === "user" && (
+                                        <Link
+                                            to="/user-dashboard"
+                                            className="font-medium text-gray-700 hover:text-primary transition-colors duration-200"
+                                            onClick={toggleMobileMenu}
+                                        >
+                                            Dashboard
+                                        </Link>
+                                    )}
+                                    {user.role === "admin" && (
+                                        <Link
+                                            to="/admin-dashboard"
+                                            className="font-medium text-gray-700 hover:text-primary transition-colors duration-200"
+                                            onClick={toggleMobileMenu}
+                                        >
+                                            Admin
+                                        </Link>
+                                    )}
+                                </>
+                            )}
+                        </div>
+                    </div>
+                )}
 
                 {/* Search Bar */}
                 <div className="pb-4">
