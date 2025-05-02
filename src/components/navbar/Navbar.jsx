@@ -137,6 +137,10 @@ const Navbar = () => {
                 {/* Mobile Menu */}
                 {isMobileMenuOpen && (
                     <div className="md:hidden py-4 border-t border-gray-200 bg-white absolute w-full left-0 shadow-lg">
+                        {/* Search Bar for Mobile */}
+                        <div className="px-4 mb-4">
+                            <SearchBar />
+                        </div>
                         <div className="flex flex-col space-y-4 px-4">
                             <Link
                                 to="/"
@@ -195,8 +199,8 @@ const Navbar = () => {
                     </div>
                 )}
 
-                {/* Search Bar */}
-                <div className="pb-4">
+                {/* Search Bar - Desktop */}
+                <div className="hidden md:block pb-4">
                     <div className="max-w-2xl mx-auto">
                         <SearchBar />
                     </div>

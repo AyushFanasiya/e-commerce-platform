@@ -159,7 +159,7 @@ const UserDashboard = () => {
                                                     {order.cartItems.map((item, itemIndex) => (
                                                         <div key={itemIndex} className="flex items-center space-x-4">
                                                             <img
-                                                                src={item.imageUrl}
+                                                                src={item.productImageUrl}
                                                                 alt={item.title}
                                                                 className="w-20 h-20 rounded-lg object-cover"
                                                             />
