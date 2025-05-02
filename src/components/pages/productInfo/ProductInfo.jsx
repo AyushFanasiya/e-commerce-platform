@@ -93,7 +93,7 @@ const ProductInfo = () => {
 
   return (
     <Layout>
-      <section className="py-8 font-poppins dark:bg-gray-800">
+      <section className="py-8 font-poppins bg-white">
         {loading ? (
           <div className="flex justify-center items-center min-h-[60vh]">
             <Loader />
