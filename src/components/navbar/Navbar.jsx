@@ -136,18 +136,18 @@ const Navbar = () => {
 
                 {/* Mobile Menu */}
                 {isMobileMenuOpen && (
-                    <div className="md:hidden py-4 border-t border-gray-200">
-                        <div className="flex flex-col space-y-4">
+                    <div className="md:hidden py-4 border-t border-gray-200 bg-white absolute w-full left-0 shadow-lg">
+                        <div className="flex flex-col space-y-4 px-4">
                             <Link
                                 to="/"
-                                className="font-medium text-gray-700 hover:text-primary transition-colors duration-200"
+                                className="font-medium text-gray-700 hover:text-primary transition-colors duration-200 py-2"
                                 onClick={toggleMobileMenu}
                             >
                                 Home
                             </Link>
                             <Link
                                 to="/allproduct"
-                                className="font-medium text-gray-700 hover:text-primary transition-colors duration-200"
+                                className="font-medium text-gray-700 hover:text-primary transition-colors duration-200 py-2"
                                 onClick={toggleMobileMenu}
                             >
                                 All Products
@@ -156,14 +156,14 @@ const Navbar = () => {
                                 <>
                                     <Link
                                         to="/signup"
-                                        className="btn-secondary"
+                                        className="btn-secondary py-2"
                                         onClick={toggleMobileMenu}
                                     >
                                         Sign Up
                                     </Link>
                                     <Link
                                         to="/login"
-                                        className="btn-primary"
+                                        className="btn-primary py-2"
                                         onClick={toggleMobileMenu}
                                     >
                                         Login
@@ -174,7 +174,7 @@ const Navbar = () => {
                                     {user.role === "user" && (
                                         <Link
                                             to="/user-dashboard"
-                                            className="font-medium text-gray-700 hover:text-primary transition-colors duration-200"
+                                            className="font-medium text-gray-700 hover:text-primary transition-colors duration-200 py-2"
                                             onClick={toggleMobileMenu}
                                         >
                                             Dashboard
@@ -183,7 +183,7 @@ const Navbar = () => {
                                     {user.role === "admin" && (
                                         <Link
                                             to="/admin-dashboard"
-                                            className="font-medium text-gray-700 hover:text-primary transition-colors duration-200"
+                                            className="font-medium text-gray-700 hover:text-primary transition-colors duration-200 py-2"
                                             onClick={toggleMobileMenu}
                                         >
                                             Admin
