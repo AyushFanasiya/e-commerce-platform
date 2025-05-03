@@ -129,7 +129,7 @@ const OrderDetail = () => {
                         >
                             {/* Order Header */}
                             <div className="p-6 border-b border-gray-100">
-                                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                                <div className="flex flex-col sm:flex-row flex-wrap justify-between items-start sm:items-center gap-4">
                                     <div>
                                         <h3 className="text-lg font-semibold text-gray-900">
                                             Order #{order?.id || 'N/A'}
@@ -140,7 +140,7 @@ const OrderDetail = () => {
                                                 : 'Date not available'}
                                         </p>
                                     </div>
-                                    <div className="flex items-center gap-4">
+                                    <div className="flex flex-col sm:flex-row items-stretch gap-2 w-full sm:w-auto">
                                         <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(order?.status)}`}>
                                             {order?.status || 'pending'}
                                         </span>
@@ -157,7 +157,7 @@ const OrderDetail = () => {
                                         </select>
                                         <button
                                             onClick={() => handleDeleteOrder(order?.id)}
-                                            className="px-3 py-1 text-sm font-medium text-white bg-red-500 hover:bg-red-600 rounded-lg transition-colors duration-200"
+                                            className="px-3 py-1 text-sm font-medium text-white bg-red-500 hover:bg-red-600 rounded-lg transition-colors duration-200 w-full sm:w-auto"
                                         >
                                             Delete
                                         </button>
