@@ -23,7 +23,10 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     // Calculate total revenue from orders
-    const revenue = getAllOrder.reduce((total, order) => total + order.totalAmount, 0);
+    const revenue = getAllOrder.reduce((total, order) => {
+      const amount = Number(order?.totalAmount) || 0;
+      return total + amount;
+    }, 0);
     setStats({
       totalRevenue: revenue,
       totalProducts: getAllProduct.length,

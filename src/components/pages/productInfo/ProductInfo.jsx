@@ -3,7 +3,7 @@ import Layout from "../../layout/Layout";
 import myContext from "../../../context/myContext";
 import { useParams, useNavigate } from "react-router";
 import { fireDB } from "../../../firebase/FirebaseConfig";
-import { doc, getDoc, collection, addDoc } from "firebase/firestore";
+import { doc, getDoc, collection, addDoc, updateDoc } from "firebase/firestore";
 import Loader from "../../loader/Loader";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, deleteFromCart } from "../../../redux/cartSlice";
@@ -42,8 +42,25 @@ const ProductInfo = () => {
   const cartItems = useSelector((state) => state.cart);
   const dispatch = useDispatch();
 
-  const addCart = (item) => {
-    dispatch(addToCart(item));
+  const addCart = async (item) => {
+    // Check if product is in stock
+    const productRef = doc(fireDB, "products", item.id);
+    const productDoc = await getDoc(productRef);
+    const productData = productDoc.data();
+    
+    if (!productData || productData.quantity < 1) {
+      toast.error("Product is out of stock");
+      return;
+    }
+
+    // Check if already in cart and would exceed stock
+    const existingItem = cartItems.find(cartItem => cartItem.id === item.id);
+    if (existingItem && existingItem.quantity >= productData.quantity) {
+      toast.error("Maximum available quantity reached");
+      return;
+    }
+
+    dispatch(addToCart({ ...item, quantity: productData.quantity }));
     toast.success("Added to cart");
   };
 
@@ -58,12 +75,28 @@ const ProductInfo = () => {
       return toast.error("All fields are required");
     }
 
+    // Check if product is in stock
+    const productRef = doc(fireDB, "products", product.id);
+    const productDoc = await getDoc(productRef);
+    const productData = productDoc.data();
+    
+    if (!productData || productData.quantity < 1) {
+        toast.error("Product is out of stock");
+        return;
+    }
+
     setLoading(true);
     try {
+      const user = JSON.parse(localStorage.getItem("users"));
       const orderData = {
         ...product,
         ...addressInfo,
+        email: user.email,
+        userid: user.uid,
+        userName: user.name,
+        userEmail: user.email,
         status: "pending",
+        totalAmount: product.price,
         time: new Date().toISOString(),
         date: new Date().toLocaleString("en-US", {
           month: "short",
@@ -72,7 +105,14 @@ const ProductInfo = () => {
         }),
       };
 
+      // Create the order
       await addDoc(collection(fireDB, "order"), orderData);
+
+      // Update product quantity
+      await updateDoc(productRef, {
+        quantity: productData.quantity - 1
+      });
+
       toast.success("Order placed successfully");
       navigate("/");
     } catch (error) {

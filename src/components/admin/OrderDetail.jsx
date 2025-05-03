@@ -6,7 +6,7 @@ import { fireDB } from "../../firebase/FirebaseConfig";
 
 const OrderDetail = () => {
     const context = useContext(myContext);
-    const { getAllOrder, getAllProduct } = context;
+    const { getAllOrder, getAllProduct, deleteProduct } = context;
     const [searchTerm, setSearchTerm] = useState("");
     const [statusFilter, setStatusFilter] = useState("all");
 
@@ -46,6 +46,18 @@ const OrderDetail = () => {
         } catch (error) {
             console.error("Error updating order status:", error);
             toast.error("Failed to update order status");
+        }
+    };
+
+    // Delete order
+    const handleDeleteOrder = async (orderId) => {
+        if (!orderId) {
+            toast.error("Invalid order ID");
+            return;
+        }
+
+        if (window.confirm("Are you sure you want to delete this order?")) {
+            await deleteProduct(orderId);
         }
     };
 
@@ -143,6 +155,12 @@ const OrderDetail = () => {
                                                 </option>
                                             ))}
                                         </select>
+                                        <button
+                                            onClick={() => handleDeleteOrder(order?.id)}
+                                            className="px-3 py-1 text-sm font-medium text-white bg-red-500 hover:bg-red-600 rounded-lg transition-colors duration-200"
+                                        >
+                                            Delete
+                                        </button>
                                     </div>
                                 </div>
                             </div>

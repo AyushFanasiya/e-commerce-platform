@@ -9,29 +9,30 @@ export const cartSlice = createSlice({
     initialState,
     reducers: {
         addToCart(state, action) {
-            state.push(action.payload)
+            const existingItem = state.find(item => item.id === action.payload.id);
+            if (existingItem) {
+                // Check if adding one more would exceed stock
+                if (existingItem.quantity < action.payload.quantity) {
+                    existingItem.quantity += 1;
+                }
+            } else {
+                state.push({ ...action.payload, quantity: 1 });
+            }
         },
         deleteFromCart(state, action) {
-            return state.filter(item => item.id != action.payload.id);
+            return state.filter(item => item.id !== action.payload.id);
         },
         incrementQuantity: (state, action) => {
-            state = state.map(item => {
-                if (item.id === action.payload) {
-                    item.quantity++;
-                }
-                return item;
-            });
+            const item = state.find(item => item.id === action.payload.id);
+            if (item && item.quantity < action.payload.availableQuantity) {
+                item.quantity += 1;
+            }
         },
         decrementQuantity: (state, action) => {
-            state = state.map(item => {
-                if (item.quantity !== 1) {
-                    if (item.id === action.payload) {
-                        item.quantity--;
-                    }
-                }
-                return item;
-
-            })
+            const item = state.find(item => item.id === action.payload);
+            if (item && item.quantity > 1) {
+                item.quantity -= 1;
+            }
         },
     },
 })

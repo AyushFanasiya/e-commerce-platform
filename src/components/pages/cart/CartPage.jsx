@@ -8,7 +8,7 @@ import {
 } from "../../../redux/cartSlice";
 import toast from "react-hot-toast";
 import { useEffect, useState } from "react";
-import { Timestamp, addDoc, collection } from "firebase/firestore";
+import { Timestamp, addDoc, collection, doc, updateDoc, getDoc } from "firebase/firestore";
 import { fireDB } from "../../../firebase/FirebaseConfig";
 import BuyNowModal from "../../buyNowModal/BuyNowModal";
 import { Navigate, Link } from "react-router";
@@ -22,8 +22,24 @@ const CartPage = () => {
     toast.success("Delete cart");
   };
 
-  const handleIncrement = (id) => {
-    dispatch(incrementQuantity(id));
+  const handleIncrement = async (id) => {
+    // Check current stock
+    const productRef = doc(fireDB, "products", id);
+    const productDoc = await getDoc(productRef);
+    const productData = productDoc.data();
+    
+    if (!productData) {
+      toast.error("Product not found");
+      return;
+    }
+
+    const currentItem = cartItems.find(item => item.id === id);
+    if (currentItem && currentItem.quantity >= productData.quantity) {
+      toast.error("Maximum available quantity reached");
+      return;
+    }
+
+    dispatch(incrementQuantity({ id, availableQuantity: productData.quantity }));
   };
 
   const handleDecrement = (id) => {
@@ -71,7 +87,19 @@ const CartPage = () => {
     ) {
       return toast.error("All fields are required");
     }
-  
+
+    // Check if all items are in stock
+    for (const item of cartItems) {
+      const productRef = doc(fireDB, "products", item.id);
+      const productDoc = await getDoc(productRef);
+      const productData = productDoc.data();
+      
+      if (!productData || productData.quantity < item.quantity) {
+        toast.error(`Not enough stock for ${item.title}`);
+        return;
+      }
+    }
+
     // Order Info
     const orderInfo = {
       cartItems,
@@ -89,12 +117,29 @@ const CartPage = () => {
         year: "numeric",
       }),
     };
-  
+
     try {
+      // Create the order
       const orderRef = collection(fireDB, "order");
-      await addDoc(orderRef, orderInfo); // Await here
-  
-      // Reset address form with time and date
+      await addDoc(orderRef, orderInfo);
+
+      // Update product quantities
+      for (const item of cartItems) {
+        const productRef = doc(fireDB, "products", item.id);
+        const productDoc = await getDoc(productRef);
+        const productData = productDoc.data();
+        
+        await updateDoc(productRef, {
+          quantity: productData.quantity - item.quantity
+        });
+      }
+
+      // Clear the cart
+      cartItems.forEach(item => {
+        dispatch(deleteFromCart(item));
+      });
+
+      // Reset address form
       setAddressInfo({
         name: "",
         address: "",
@@ -107,7 +152,7 @@ const CartPage = () => {
           year: "numeric",
         }),
       });
-  
+
       toast.success("Order placed successfully!");
     } catch (error) {
       console.log(error);
@@ -199,12 +244,14 @@ const CartPage = () => {
                               +
                             </button>
                           </div>
-                          <button
-                            onClick={() => deleteCart(item)}
-                            className={`w-full h-12 text-base font-semibold rounded-lg transition-colors duration-200 bg-red-500 hover:bg-red-600 text-white`}
-                          >
-                            Remove
-                          </button>
+                          <div className="ml-4">
+                            <button
+                              onClick={() => deleteCart(item)}
+                              className="px-40 py-2 text-base font-medium text-white bg-red-500 hover:bg-red-600 rounded-lg transition-colors duration-200"
+                            >
+                              Remove
+                            </button>
+                          </div>
                         </div>
                       </div>
                     );
