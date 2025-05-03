@@ -62,12 +62,12 @@ const ProductDetail = () => {
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                     />
                 </div>
-                <div className="flex gap-2">
+                <div className="flex gap-2 overflow-x-auto scrollbar-hide whitespace-nowrap py-1 -mx-2 px-2">
                     {categories.map((category) => (
                         <button
                             key={category}
                             onClick={() => setSelectedCategory(category)}
-                            className={`px-4 py-2 rounded-lg capitalize transition-colors duration-200 ${
+                            className={`px-4 py-2 rounded-lg capitalize transition-colors duration-200 min-w-max ${
                                 selectedCategory === category
                                     ? "bg-primary text-white"
                                     : "bg-gray-100 text-gray-700 hover:bg-gray-200"

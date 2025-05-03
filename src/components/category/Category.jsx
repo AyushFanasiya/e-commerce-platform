@@ -58,12 +58,12 @@ const Category = () => {
                     </p>
                 </div>
 
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-6">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-6 overflow-x-auto scrollbar-hide whitespace-nowrap py-2 -mx-2 px-2">
                     {categories.map((item, index) => (
                         <div
                             key={index}
                             onClick={() => navigate(`/category/${item.name}`)}
-                            className="group cursor-pointer"
+                            className="group cursor-pointer inline-block align-top min-w-[120px]"
                         >
                             <div className={`relative rounded-2xl bg-gradient-to-br ${item.color} p-4 transition-all duration-300 group-hover:scale-105 group-hover:shadow-lg`}>
                                 <div className="aspect-square flex items-center justify-center">

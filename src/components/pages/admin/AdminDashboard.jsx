@@ -151,7 +151,7 @@ const AdminDashboard = () => {
         {/* Tabs Section */}
         <div className="bg-white rounded-xl shadow-sm overflow-hidden">
           <Tabs>
-            <TabList className="flex border-b border-gray-200">
+            <TabList className="flex border-b border-gray-200 overflow-x-auto scrollbar-hide whitespace-nowrap">
               {[
                 { icon: "📦", label: "Products" },
                 { icon: "📋", label: "Orders" },
@@ -159,7 +159,7 @@ const AdminDashboard = () => {
               ].map((tab, index) => (
                 <Tab
                   key={index}
-                  className="flex-1 px-6 py-4 text-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 focus:outline-none"
+                  className="flex-1 px-6 py-4 text-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 focus:outline-none min-w-[120px]"
                   selectedClassName="border-b-2 border-primary text-primary"
                 >
                   <div className="flex items-center justify-center space-x-2">
