@@ -247,7 +247,7 @@ const CartPage = () => {
                           <div className="ml-4">
                             <button
                               onClick={() => deleteCart(item)}
-                              className="px-40 py-2 text-base font-medium text-white bg-red-500 hover:bg-red-600 rounded-lg transition-colors duration-200"
+                              className="w-full sm:w-auto px-4 py-2 text-base font-medium text-white bg-red-500 hover:bg-red-600 rounded-lg transition-colors duration-200"
                             >
                               Remove
                             </button>
