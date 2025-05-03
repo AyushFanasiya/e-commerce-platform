@@ -159,7 +159,7 @@ const AdminDashboard = () => {
               ].map((tab, index) => (
                 <Tab
                   key={index}
-                  className="flex-1 px-6 py-4 text-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 focus:outline-none min-w-[120px]"
+                  className="px-6 py-4 text-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 focus:outline-none min-w-[120px]"
                   selectedClassName="border-b-2 border-primary text-primary"
                 >
                   <div className="flex items-center justify-center space-x-2">

@@ -57,17 +57,23 @@ const AddProductPage = () => {
 
     try {
       setLoading(true);
-      const storageRef = ref(storage, `products/${Date.now()}_${file.name}`);
-      const snapshot = await uploadBytes(storageRef, file);
-      const downloadURL = await getDownloadURL(snapshot.ref);
-      
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", "new preset"); // Replace with your Cloudinary preset
+      const res = await fetch(
+        "https://api.cloudinary.com/v1_1/digqxbemx/image/upload",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      const data = await res.json();
       setProduct({
         ...product,
-        productImageUrl: downloadURL
+        productImageUrl: data.secure_url,
       });
       toast.success("Image uploaded successfully");
     } catch (error) {
-      console.error("Error uploading image:", error);
       toast.error("Failed to upload image");
     } finally {
       setLoading(false);
