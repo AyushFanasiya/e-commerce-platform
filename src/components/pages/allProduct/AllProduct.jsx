@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { addToCart, deleteFromCart } from "../../../redux/cartSlice";
 import { doc, getDoc } from "firebase/firestore";
-import { fireDB } from "../../../firebase/firebaseConfig";
+import { fireDB } from "../../../firebase/FirebaseConfig";
 
 const AllProduct = () => {
     const navigate = useNavigate();
