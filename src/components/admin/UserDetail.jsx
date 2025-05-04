@@ -3,10 +3,12 @@ import myContext from "../../context/myContext";
 import { toast } from "react-hot-toast";
 import { deleteDoc, doc } from "firebase/firestore";
 import { fireDB } from "../../firebase/FirebaseConfig";
+import { deleteUser as deleteAuthUser } from "firebase/auth";
+import { auth } from "../../firebase/FirebaseConfig";
 
 const UserDetail = () => {
     const context = useContext(myContext);
-    const { getAllUser } = context;
+    const { getAllUser, getAllUserFunction } = context;
     const [searchTerm, setSearchTerm] = useState("");
     const [roleFilter, setRoleFilter] = useState("all");
 
@@ -23,13 +25,29 @@ const UserDetail = () => {
     });
 
     // Delete user
-    const deleteUser = async (id) => {
+    const deleteUser = async (id, uid) => {
+        // Add confirmation dialog
+        if (!window.confirm('Are you sure you want to delete this user? This action cannot be undone.')) {
+            return;
+        }
+
         try {
-            await deleteDoc(doc(fireDB, "users", id));
+            // Delete from Firestore
+            await deleteDoc(doc(fireDB, "user", id)); // Changed from "users" to "user" to match the collection name
+            
+            // Delete from Firebase Auth
+            const userToDelete = auth.currentUser;
+            if (userToDelete && userToDelete.uid === uid) {
+                await deleteAuthUser(userToDelete);
+            }
+
+            // Refresh user list
+            await getAllUserFunction();
+            
             toast.success("User deleted successfully");
         } catch (error) {
             console.log(error);
-            toast.error("Error deleting user");
+            toast.error("Error deleting user: " + error.message);
         }
     };
 
@@ -117,7 +135,7 @@ const UserDetail = () => {
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                         <button
-                                            onClick={() => deleteUser(user.id)}
+                                            onClick={() => deleteUser(user.id, user.uid)}
                                             className="btn-danger"
                                         >
                                             Delete

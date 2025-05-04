@@ -156,24 +156,30 @@ const UserDashboard = () => {
                                             {/* Order Items */}
                                             <div className="p-6">
                                                 <div className="space-y-4">
-                                                    {order.cartItems.map((item, itemIndex) => (
-                                                        <div key={itemIndex} className="flex items-center space-x-4">
-                                                            <img
-                                                                src={item.productImageUrl}
-                                                                alt={item.title}
-                                                                className="w-20 h-20 rounded-lg object-cover"
-                                                            />
-                                                            <div className="flex-1">
-                                                                <h4 className="text-sm font-medium text-gray-900">{item.title}</h4>
-                                                                <p className="text-sm text-gray-500">
-                                                                    Quantity: {item.quantity} × ₹{item.price}
-                                                                </p>
+                                                    {order.cartItems && order.cartItems.length > 0 ? (
+                                                        order.cartItems.map((item, itemIndex) => (
+                                                            <div key={itemIndex} className="flex items-center space-x-4">
+                                                                <img
+                                                                    src={item.productImageUrl}
+                                                                    alt={item.title}
+                                                                    className="w-20 h-20 rounded-lg object-cover"
+                                                                />
+                                                                <div className="flex-1">
+                                                                    <h4 className="text-sm font-medium text-gray-900">{item.title}</h4>
+                                                                    <p className="text-sm text-gray-500">
+                                                                        Quantity: {item.quantity} × ₹{item.price}
+                                                                    </p>
+                                                                </div>
+                                                                <div className="text-sm font-medium text-gray-900">
+                                                                    ₹{item.quantity * item.price}
+                                                                </div>
                                                             </div>
-                                                            <div className="text-sm font-medium text-gray-900">
-                                                                ₹{item.quantity * item.price}
-                                                            </div>
+                                                        ))
+                                                    ) : (
+                                                        <div className="text-center py-4 text-gray-500">
+                                                            No items in this order
                                                         </div>
-                                                    ))}
+                                                    )}
                                                 </div>
 
                                                 {/* Order Summary */}

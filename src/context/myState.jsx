@@ -128,7 +128,8 @@ function MyState({ children }) {
             getAllProductFunction,
             getAllOrder,
             deleteProduct,
-            getAllUser
+            getAllUser,
+            getAllUserFunction
         }}>
             {children}
         </MyContext.Provider>
