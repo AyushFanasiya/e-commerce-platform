@@ -70,7 +70,7 @@ npm run dev
 ## Deployment
 
 The application is deployed on Vercel. You can access the live version at:
-[E-Commerce Platform](https://e-commerce-platform-ayushfanasiya.vercel.app)
+[E-Commerce Platform](https://e-commerce-platform-dtph.vercel.app/)
 
 To deploy your own version:
 1. Fork this repository
