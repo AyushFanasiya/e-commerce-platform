@@ -67,6 +67,18 @@ VITE_FIREBASE_APP_ID=your_app_id
 npm run dev
 ```
 
+## Deployment
+
+The application is deployed on Vercel. You can access the live version at:
+[E-Commerce Platform](https://e-commerce-platform-ayushfanasiya.vercel.app)
+
+To deploy your own version:
+1. Fork this repository
+2. Create a new project on Vercel
+3. Import your forked repository
+4. Add the required environment variables in Vercel project settings
+5. Deploy!
+
 ## Project Structure
 
 ```
